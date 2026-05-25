@@ -3,6 +3,7 @@
 #include "reciter.h"
 #include "ReciterTabs.h"
 #include "debug.h"
+#include "sam.h"
 
 unsigned char A, X, Y;
 extern int debug;
@@ -161,6 +162,7 @@ pos36677:
     if(A == 0)
     {
         //36683: BRK
+        SetSamError(SAM_ERR_PARSE);
         return 0;
     }
 
@@ -266,6 +268,7 @@ pos36791:
     if (A == ':') goto pos37040;
     //  Code42041();    //Error
     //36894: BRK
+    SetSamError(SAM_ERR_PARSE);
     return 0;
 
     // --------------
@@ -437,6 +440,7 @@ pos37226:
     //pos37291:
     //  Code42041(); //Error
     //37294: BRK
+    SetSamError(SAM_ERR_PARSE);
     return 0;
 
     // --------------

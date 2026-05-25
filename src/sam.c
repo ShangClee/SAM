@@ -109,6 +109,7 @@ void SetBufferBytes(size_t bytes)
 }
 
 int GetSamError() { return sam_error; }
+void SetSamError(int code) { sam_error = code; }
 
 int Init()
 {

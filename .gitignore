@@ -1,3 +1,6 @@
 .DS_Store
 *.o
 /sam
+# ignore generated test wavs
+tmp_test_wavs/
+*.wav
