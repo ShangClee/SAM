@@ -1,0 +1,326 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+
+# Make data base, printed on Mon Jul 11 11:33:46 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/shanglee/PrjC/SAM
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 6)
+CFLAGS = -Wall -Os -DUSESDL `sdl-config --cflags`
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# makefile (from `Makefile', line 1)
+OBJS = reciter.o sam.o render.o main.o debug.o
+# environment
+VSCODE_CWD = /Users/shanglee/PrjC
+# environment
+Apple_PubSub_Socket_Render = /private/tmp/com.apple.launchd.aQsmnOVQn2/Render
+# environment
+PATH = /Users/shanglee/.bun/bin:/Users/shanglee/opt/anaconda3/bin:/Users/shanglee/opt/anaconda3/condabin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin
+# environment
+ITERM_PREV_PS1 = \[]133;D;$?]133;A\](base) \[\033[36m\]@\t\[\033[33;1m\]\w\[\033[m\]\n$ \[]133;B\]
+# environment
+LSCOLORS = ExFxBxDxCxegedabagacad
+# environment
+PS3 = \e[0;32m[\u@\h \W]$ \e[0m
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.R0SLf5OBOf/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+DISPLAY = /private/tmp/com.apple.launchd.iTcKqTCxzd/org.xquartz:0
+# environment
+CONDA_EXE = /Users/shanglee/opt/anaconda3/bin/conda
+# environment
+ITERM_ORIG_PS1 = (base) \[\033[36m\]@\t\[\033[33;1m\]\w\[\033[m\]\n$ 
+# environment
+PWD = /Users/shanglee/PrjC/SAM
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/shanglee
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CLI = 1
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/shanglee/Library/Application Support/Code/CachedData/92d25e35d9bf1a6b16f7d0758f25d48ace11e5b9
+# environment
+LOGNAME = shanglee
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+CONDA_PROMPT_MODIFIER = (base) 
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+CONDA_DEFAULT_ENV = base
+# environment
+XPC_FLAGS = 0x0
+# environment
+COLORTERM = truecolor
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+LC_TERMINAL = iTerm2
+# environment
+SHLVL = 3
+# makefile (from `Makefile', line 3)
+CC = gcc
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = shanglee
+# makefile
+.DEFAULT_GOAL := sam
+# default
+MAKECMDGOALS := all
+# environment
+TERM_SESSION_ID = w0t0p0:3B0F0E4E-602F-448E-9EB4-5B3F081CBFEB
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# makefile (from `Makefile', line 7)
+LFLAGS = `sdl-config --libs`
+# environment
+CONDA_SHLVL = 1
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# environment
+TERM_PROGRAM = iTerm.app
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/ym/d32s2fd16cs2cts16nypmt440000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/shanglee/Library/Application Support/Code/1.69.0-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+TERM_PROGRAM_VERSION = 3.3.12
+# environment
+XPC_SERVICE_NAME = 0
+# environment
+LC_TERMINAL_VERSION = 3.3.12
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+ITERM_SESSION_ID = w0t0p0:3B0F0E4E-602F-448E-9EB4-5B3F081CBFEB
+# environment
+COLORFGBG = 7;0
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x52
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+ITERM_PROFILE = Default
+# environment
+LC_ALL = C
+# environment
+CONDA_PYTHON_EXE = /Users/shanglee/opt/anaconda3/bin/python
+# environment
+SECURITYSESSIONID = 186a8
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+_CE_M = 
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+MAKELEVEL := 0
+# environment
+CLICOLOR = 1
+# environment
+CONDA_PREFIX = /Users/shanglee/opt/anaconda3
+# environment
+TERM = xterm-256color
+# environment
+VSCODE_PID = 93430
+# environment
+_CE_CONDA = 
+# environment
+LANG = C
+# variable set hash-table stats:
+# Load=88/1024=9%, Rehash=0, Collisions=7/117=6%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777220, inode 62790082): 10 files, no impossibilities.
+# src (device 16777220, inode 62790102): No files, no impossibilities so far.
+
+# 10 files, no impossibilities in 2 directories.
+
+# Implicit Rules
+
+%.o: src/%.c
+#  commands to execute (from `Makefile', line 17):
+	$(CC) $(CFLAGS) -c $<
+	
+
+# 1 implicit rules, 0 (0.0%) terminal.
+
+# Files
+
+# Not a target:
+all:
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-07-11 10:41:27
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+debug.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+sam: reciter.o sam.o render.o main.o debug.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 14):
+	$(CC) -o sam $(OBJS) $(LFLAGS)
+	
+
+# Not a target:
+sam.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+archive:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 26):
+	rm -f sam_windows.zip
+	cd ..; zip SAM/sam_windows.zip	SAM/sam.exe SAM/SDL.dll SAM/README.md SAM/demos/*.bat
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+reciter.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+package:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 20):
+	tar -cvzf sam.tar.gz README.md Makefile sing src/
+	
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 23):
+	rm -f *.o
+	
+
+# Not a target:
+main.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+render.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=13/1024=1%, Rehash=0, Collisions=0/30=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+ 
+make: *** No rule to make target `all'.  Stop.
+
+# Finished Make data base on Mon Jul 11 11:33:46 2022
+
+ 

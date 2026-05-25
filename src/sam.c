@@ -6,6 +6,12 @@
 #include "render.h"
 #include "SamTabs.h"
 
+// NOTE: src/sam.c originates from a semi-automatic translation of assembly
+// code. It intentionally preserves some original structure and indentation.
+// Keep comments minimal.
+
+
+
 char input[256]; //tab39445
 //standard sam sound
 unsigned char speed = 72;
@@ -63,7 +69,7 @@ void EnableSingmode() {singmode = 1;}
 char* GetBuffer(){return buffer;}
 int GetBufferLength(){return bufferpos;}
 
-void Init();
+int Init();
 int Parser1();
 void Parser2();
 int SAMMain();
@@ -85,14 +91,48 @@ void SetMouthThroat(unsigned char mouth, unsigned char throat);
 // 174=amplitude3
 
 
-void Init()
+static int buffer_seconds = 10;
+static size_t buffer_bytes = 0;
+static int sam_error = 0; // 0=ok, non-zero = error code
+
+void SetBufferSeconds(int seconds)
+{
+    if (seconds <= 0) return;
+    buffer_seconds = seconds;
+    buffer_bytes = 0; // prefer seconds when both set
+}
+
+void SetBufferBytes(size_t bytes)
+{
+    if (bytes == 0) return;
+    buffer_bytes = bytes;
+}
+
+int GetSamError() { return sam_error; }
+
+int Init()
 {
     int i;
     SetMouthThroat( mouth, throat);
 
     bufferpos = 0;
-    // TODO, check for free the memory, 10 seconds of output should be more than enough
-    buffer = malloc(22050*10);
+    // free previous buffer if any
+    if (buffer != NULL) {
+        free(buffer);
+        buffer = NULL;
+    }
+
+    /* Allocate zero-initialized buffer for safety and check allocation */
+    size_t size;
+    if (buffer_bytes != 0) size = buffer_bytes;
+    else size = 22050 * (size_t)buffer_seconds;
+
+    buffer = calloc(size, 1);
+    if (buffer == NULL) {
+        fprintf(stderr, "Out of memory allocating sound buffer (requested %zu bytes)\n", size);
+        sam_error = 1; // OOM
+        return 0;
+    }
 
     /*
     freq2data = &mem[45136];
@@ -131,13 +171,15 @@ void Init()
     }
     phonemeindex[255] = 255; //to prevent buffer overflow // ML : changed from 32 to 255 to stop freezing with long inputs
 
+    return 1;
+
 }
 
 
 //int Code39771()
 int SAMMain()
 {
-    Init();
+    if (!Init()) return 0;
     phonemeindex[255] = 32; //to prevent buffer overflow
 
     if (!Parser1()) return 0;
@@ -300,12 +342,9 @@ void CopyStress()
         if ((flags[Y] & 64) == 0) {pos++; continue;}
         // get the next phoneme
         Y = phonemeindex[pos+1];
-        if (Y == 255) //prevent buffer overflow
-        {
-            pos++; continue;
-        } else
+        if (Y == 255) { pos++; continue; }
         // if the following phoneme is a vowel, skip
-        if ((flags[Y] & 128) == 0)  {pos++; continue;}
+        if ((flags[Y] & 128) == 0) { pos++; continue; }
 
         // get the stress value at the next position
         Y = stress[pos+1];
@@ -512,6 +551,7 @@ pos41134:
             //mem[39444] = X;
             //41181: JSR 42043 //Error
            // FAILED TO MATCH ANYTHING, RETURN 0 ON FAILURE
+            sam_error = SAM_ERR_PARSE;
             return 0;
         }
 // SET THE STRESS FOR THE PRIOR PHONEME
@@ -557,8 +597,7 @@ void Code41240()
         {
             pos++;
             continue;
-        } else
-        if ((flags[index]&1) == 0)
+        } else if ((flags[index]&1) == 0)
         {
             Insert(pos+1, index+1, phonemeLengthTable[index+1], stress[pos]);
             Insert(pos+2, index+2, phonemeLengthTable[index+2], stress[pos]);

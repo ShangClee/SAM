@@ -58,6 +58,8 @@ void PrintUsage()
     printf("    -wav filename        output to wav instead of libsdl\n");
     printf("    -sing            special treatment of pitch\n");
     printf("    -debug            print additional debug messages\n");
+    printf("    -buffer-seconds N   set buffer size in seconds (integer)\n");
+    printf("    -buffer-bytes N[K|M] set buffer size in bytes; optional K/M suffix\n");
     printf("\n");
 
 
@@ -178,6 +180,25 @@ int main(int argc, char **argv)
                 wavfilename = argv[i+1];
                 i++;
             } else
+            if (strcmp(&argv[i][1], "buffer-seconds")==0)
+            {
+                SetBufferSeconds(atoi(argv[i+1]));
+                i++;
+            } else
+            if (strcmp(&argv[i][1], "buffer-bytes")==0)
+            {
+                /* support optional K or M suffixes */
+                {
+                    const char *s = argv[i+1];
+                    char *endptr = NULL;
+                    unsigned long val = strtoul(s, &endptr, 10);
+                    size_t n = (size_t)val;
+                    if (*endptr == 'K' || *endptr == 'k') n *= 1024;
+                    else if (*endptr == 'M' || *endptr == 'm') n *= 1024 * 1024;
+                    SetBufferBytes(n);
+                }
+                i++;
+            } else
             if (strcmp(&argv[i][1], "sing")==0)
             {
                 EnableSingmode();
@@ -248,7 +269,9 @@ int main(int argc, char **argv)
     SetInput(input);
     if (!SAMMain())
     {
-        PrintUsage();
+        int err = GetSamError();
+        if (err == 1) fprintf(stderr, "Error: Out of memory allocating sound buffer\n");
+        else fprintf(stderr, "Error: SAM failed\n");
         return 1;
     }
 

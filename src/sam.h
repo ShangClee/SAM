@@ -8,6 +8,9 @@ void SetMouth(unsigned char _mouth);
 void SetThroat(unsigned char _throat);
 void EnableSingmode();
 void EnableDebug();
+void SetBufferSeconds(int seconds);
+void SetBufferBytes(size_t bytes);
+int GetSamError();
 
 int SAMMain();
 
@@ -36,3 +39,9 @@ int GetBufferLength();
 
 
 #endif
+
+// Error codes returned by GetSamError()
+#define SAM_ERR_OK 0
+#define SAM_ERR_OOM 1
+#define SAM_ERR_PARSE 2
+#define SAM_ERR_UNKNOWN 3
