@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SAM — Web Documentation</title>
+  <style>body{font-family:Arial,Helvetica,sans-serif;line-height:1.5;padding:24px;max-width:900px;margin:auto}h1,h2{color:#222}code{background:#f3f3f3;padding:2px 4px;border-radius:4px}</style>
+</head>
+<body>
+  <h1>SAM — Documentation</h1>
+  <p>This documentation records the changes and features added in the recent work session. Use the links below to navigate.</p>
+
+  <ul>
+    <li><a href="usage.html">User / CLI Usage</a></li>
+    <li><a href="developer.html">Developer Notes & API</a></li>
+    <li><a href="#integration">Integration Tests & CI</a></li>
+  </ul>
+
+  <h2 id="integration">Integration summary</h2>
+  <p>Added an integration test script and CI workflow. The script produces WAVs from sample phrases and validates them.</p>
+  <ul>
+    <li>Script: <code>script/test_integration.sh</code></li>
+    <li>Golden WAVs: <code>test-assets/golden_wavs/</code></li>
+    <li>Golden hashes: <code>test-assets/golden_hashes.txt</code></li>
+    <li>CI Workflow: <code>.github/workflows/integration.yml</code> (Ubuntu + macOS matrix, uploads artifacts)</li>
+  </ul>
+
+  <p>Open the Developer Notes for API details and the exact verification tolerances.</p>
+
+  <hr>
+  <p style="font-size:smaller;color:#666">Generated docs — webdocs/index.html</p>
+</body>
+</html>

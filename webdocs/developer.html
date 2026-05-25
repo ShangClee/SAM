@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SAM — Developer Notes</title>
+  <style>body{font-family:Arial,Helvetica,sans-serif;padding:24px;max-width:900px;margin:auto}pre{background:#f8f8f8;padding:12px;border-radius:6px}</style>
+</head>
+<body>
+  <h1>Developer Notes & API</h1>
+
+  <h2>Public API (src/sam.h)</h2>
+  <pre>
+void SetInput(char *_input);
+void SetSpeed(unsigned char _speed);
+void SetPitch(unsigned char _pitch);
+void SetMouth(unsigned char _mouth);
+void SetThroat(unsigned char _throat);
+void EnableSingmode();
+void EnableDebug();
+void SetBufferSeconds(int seconds);
+void SetBufferBytes(size_t bytes);
+void SetSamError(int code);
+int GetSamError();
+int SAMMain();
+char* GetBuffer();
+int GetBufferLength();
+  </pre>
+
+  <h2>Buffer sizing and errors</h2>
+  <p>Buffer allocation is controlled by <code>buffer_seconds</code> (default 10) or
+  by <code>buffer_bytes</code> when explicitly set. The code uses <code>calloc</code>
+  for allocation and reports failures via <code>GetSamError()</code> with codes in <code>src/sam.h</code>.
+  </p>
+
+  <h2>Integration tests</h2>
+  <p>Integration script: <code>script/test_integration.sh</code>. It:</p>
+  <ul>
+    <li>Generates WAV files from sample phrases</li>
+    <li>Verifies WAV headers (mono, 22050Hz)</li>
+    <li>Compares produced WAVs to golden WAVs with tolerance checks (RMS & max diff)</li>
+  </ul>
+
+  <h2>CI</h2>
+  <p>Workflow: <code>.github/workflows/integration.yml</code>. Runs on Ubuntu and macOS and uploads <code>tmp_test_wavs</code> as artifacts.</p>
+
+  <hr>
+  <p style="font-size:smaller;color:#666">Generated docs — webdocs/developer.html</p>
+</body>
+</html>

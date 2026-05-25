@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SAM — CLI Usage</title>
+  <style>body{font-family:Arial,Helvetica,sans-serif;padding:24px;max-width:900px;margin:auto}pre{background:#f8f8f8;padding:12px;border-radius:6px}</style>
+</head>
+<body>
+  <h1>SAM — Command Line Usage</h1>
+  <p>Usage:</p>
+  <pre>sam [options] Word1 Word2 ...</pre>
+
+  <h2>Options</h2>
+  <ul>
+    <li><code>-phonetic</code> — enters phonetic mode</li>
+    <li><code>-pitch N</code> — set pitch (default 64)</li>
+    <li><code>-speed N</code> — set speed (default 72)</li>
+    <li><code>-mouth N</code> — set mouth (default 128)</li>
+    <li><code>-throat N</code> — set throat (default 128)</li>
+    <li><code>-wav filename</code> — output to WAV file instead of audio device</li>
+    <li><code>-sing</code> — special treatment of pitch (sing mode)</li>
+    <li><code>-debug</code> — enable debug output</li>
+    <li><code>-buffer-seconds N</code> — set audio buffer size in seconds (default 10)</li>
+    <li><code>-buffer-bytes N[K|M]</code> — set audio buffer size in bytes, optional K/M suffix</li>
+  </ul>
+
+  <h2>Examples</h2>
+  <pre>
+  ./sam I am Sam
+  ./sam -wav out.wav Hello world
+  ./sam -buffer-bytes 4K -wav out.wav "Short test"
+  </pre>
+
+  <p>See developer notes for API and integration testing details.</p>
+  <hr>
+  <p style="font-size:smaller;color:#666">Generated docs — webdocs/usage.html</p>
+</body>
+</html>
