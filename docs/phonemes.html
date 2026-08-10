@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM — Phoneme Reference</title>
+<style>
+:root {
+  --bg: #0d0d12;
+  --surface: #16161f;
+  --surface2: #1e1e2a;
+  --surface3: #252536;
+  --accent: #6c5ce7;
+  --accent2: #a29bfe;
+  --text: #e2e2e8;
+  --text-dim: #8888a0;
+  --border: #2a2a3a;
+  --ok: #00b894;
+  --warn: #fdcb6e;
+  --err: #e17055;
+  --tag-vowel: #00b894;
+  --tag-diph: #00cec9;
+  --tag-voiced: #6c5ce7;
+  --tag-unvoiced: #e17055;
+  --tag-stop: #d63031;
+  --tag-nasal: #e84393;
+  --tag-semi: #0984e3;
+  --tag-special: #fdcb6e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 0;
+}
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 48px 24px 40px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.hero h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.hero p { color: var(--text-dim); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+.hero .badge {
+  display: inline-block;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 12px;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
+
+/* Quick start */
+.quickstart {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+}
+.quickstart h2 { font-size: 1.1rem; color: var(--accent2); margin-bottom: 12px; }
+.quickstart code {
+  background: var(--surface3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: var(--accent2);
+}
+.quickstart .cols { display: flex; gap: 32px; flex-wrap: wrap; }
+.quickstart .col { flex: 1; min-width: 240px; }
+.quickstart dt { color: var(--text-dim); font-size: 0.85rem; margin-top: 8px; }
+.quickstart dd { font-size: 0.95rem; }
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.controls input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: 'Courier New', monospace;
+}
+.controls input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--text); }
+.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* Phoneme table */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 36px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+thead th {
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:hover { background: var(--surface2); }
+tbody tr.unused { opacity: 0.3; }
+td { padding: 10px 14px; vertical-align: middle; }
+td.code {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--accent2);
+  letter-spacing: 1px;
+}
+td.ipa { font-family: 'Charis SIL', 'Lucida Sans Unicode', serif; font-size: 1rem; color: var(--text); }
+td.example { color: var(--text-dim); font-size: 0.82rem; }
+td.example strong { color: var(--ok); font-weight: 600; }
+td.num { font-family: 'Courier New', monospace; color: var(--text-dim); font-size: 0.85rem; }
+
+/* Tags */
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tag-vowel { background: rgba(0,184,148,0.15); color: var(--tag-vowel); }
+.tag-diph { background: rgba(0,206,201,0.15); color: var(--tag-diph); }
+.tag-voiced { background: rgba(108,92,231,0.15); color: var(--tag-voiced); }
+.tag-unvoiced { background: rgba(225,112,85,0.15); color: var(--tag-unvoiced); }
+.tag-stop { background: rgba(214,48,49,0.15); color: var(--tag-stop); }
+.tag-nasal { background: rgba(232,67,147,0.15); color: var(--tag-nasal); }
+.tag-semi { background: rgba(9,132,227,0.15); color: var(--tag-semi); }
+.tag-special { background: rgba(253,203,110,0.15); color: var(--tag-special); }
+.tag-punct { background: rgba(136,136,160,0.15); color: var(--text-dim); }
+
+/* Category cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 36px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.card h3 { font-size: 1rem; margin-bottom: 10px; }
+.card .phoneme-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.card .phoneme-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: var(--accent2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.card .phoneme-chip:hover {
+  border-color: var(--accent);
+  background: var(--surface3);
+}
+.card .phoneme-chip .ipa-small {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-left: 4px;
+  font-family: 'Charis SIL', serif;
+}
+
+/* Stress section */
+.stress-table { margin-bottom: 36px; }
+.stress-table h2 { font-size: 1.15rem; color: var(--accent2); margin-bottom: 12px; }
+.stress-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.stress-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.stress-cell .num { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+.stress-cell .desc { font-size: 0.78rem; color: var(--text-dim); margin-top: 4px; }
+
+/* Flag decoder */
+.flag-section { margin-bottom: 36px; }
+.flag-section h2 { font-size: 1.15rem; color: var(--accent2); margin-bottom: 12px; }
+.bit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.bit-cell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.bit-cell .bit { font-family: 'Courier New', monospace; font-size: 0.85rem; color: var(--accent); }
+.bit-cell .bit-desc { font-size: 0.82rem; color: var(--text-dim); margin-top: 4px; }
+
+/* Pipeline */
+.pipeline {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+.pipeline .arrow { color: var(--accent); margin: 0 8px; }
+.pipeline strong { color: var(--text); }
+.pipeline .highlight { color: var(--accent2); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 1.6rem; }
+  .container { padding: 20px 12px; }
+  .quickstart .cols { flex-direction: column; gap: 16px; }
+  td { padding: 8px 8px; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🗣️ SAM Phoneme Reference</h1>
+  <p>A complete, human-readable guide to every phoneme code in SAM — Software Automatic Mouth</p>
+  <span class="badge">81 phonemes · indices 0–80 · 2-character ASCII input codes</span>
+</div>
+
+<div class="container">
+
+<!-- Quick Start -->
+<div class="quickstart">
+  <h2>⚡ Quick Start — Typing Phonetic Input</h2>
+  <div class="cols">
+    <div class="col">
+      <dl>
+        <dt>Each phoneme is a 1- or 2-character code</dt>
+        <dd>e.g. <code>/H</code> = H sound, <code>EY</code> = "day"</dd>
+        <dt>Type the code directly in the SAM web app</dt>
+        <dd>Toggle <code>Phonetic input</code> checkbox, then type: <code>/HEHLOW</code></dd>
+      </dl>
+    </div>
+    <div class="col">
+      <dl>
+        <dt>Add stress with digits <code>1</code>–<code>8</code></dt>
+        <dd><code>/HEY2</code> = "hey" with stress level 2</dd>
+        <dt>Unused / variant indices (55, 58, etc.)</dt>
+        <dd>Show as <strong>—</strong> in the table. They are unused or internal variants.</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<!-- Search & Filter -->
+<div class="controls">
+  <input type="text" id="search" placeholder="Search by name, IPA, example, or index… (e.g. SH, /ʃ/, fish)" autocomplete="off">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="vowel">Vowels</button>
+  <button class="filter-btn" data-filter="diph">Diphthongs</button>
+  <button class="filter-btn" data-filter="voiced">Voiced</button>
+  <button class="filter-btn" data-filter="unvoiced">Unvoiced</button>
+  <button class="filter-btn" data-filter="nasal">Nasal</button>
+  <button class="filter-btn" data-filter="stop">Stops</button>
+  <button class="filter-btn" data-filter="semi">Semi</button>
+  <button class="filter-btn" data-filter="special">Special</button>
+</div>
+
+<!-- Main Table -->
+<div class="table-wrap">
+<table id="phonemeTable">
+<thead>
+<tr>
+  <th>#</th>
+  <th>Code</th>
+  <th>IPA</th>
+  <th>Category</th>
+  <th>Example</th>
+  <th>Len</th>
+  <th>Stressed</th>
+  <th>F1</th>
+  <th>F2</th>
+  <th>F3</th>
+  <th>A1</th>
+  <th>A2</th>
+  <th>A3</th>
+</tr>
+</thead>
+<tbody id="phonemeBody"></tbody>
+</table>
+</div>
+
+<!-- Category Cards -->
+<h2 style="font-size:1.15rem;color:var(--accent2);margin-bottom:16px">📋 Phonemes by Category</h2>
+<div class="cards" id="categoryCards"></div>
+
+<!-- Stress -->
+<div class="stress-table">
+  <h2>🔊 Stress Levels</h2>
+  <p style="color:var(--text-dim);font-size:0.88rem;margin-bottom:12px">
+    Append a digit <strong style="color:var(--accent2)">1</strong>–<strong style="color:var(--accent2)">8</strong> after any phoneme to set stress.
+    Higher values = longer duration and more emphasis. Use <strong style="color:var(--accent2)">0</strong> or omit for unstressed.
+  </p>
+  <div class="stress-grid">
+    <div class="stress-cell"><div class="num">0</div><div class="desc">Unstressed (default)</div></div>
+    <div class="stress-cell"><div class="num">1</div><div class="desc">Very light</div></div>
+    <div class="stress-cell"><div class="num">2</div><div class="desc">Light</div></div>
+    <div class="stress-cell"><div class="num">3</div><div class="desc">Mild</div></div>
+    <div class="stress-cell"><div class="num">4</div><div class="desc">Normal</div></div>
+    <div class="stress-cell"><div class="num">5</div><div class="desc">Medium</div></div>
+    <div class="stress-cell"><div class="num">6</div><div class="desc">Strong</div></div>
+    <div class="stress-cell"><div class="num">7</div><div class="desc">Very strong</div></div>
+    <div class="stress-cell"><div class="num">8</div><div class="desc">Emphatic</div></div>
+  </div>
+</div>
+
+<!-- Flag Bits -->
+<div class="flag-section">
+  <h2>🏷️ Flag Bits Decoded</h2>
+  <p style="color:var(--text-dim);font-size:0.88rem;margin-bottom:12px">
+    Each phoneme has a <code>flags</code> byte that tells the renderer how to synthesize it.
+  </p>
+  <div class="bit-grid">
+    <div class="bit-cell"><div class="bit">bit 0</div><div class="bit-desc">Vowel type flag</div></div>
+    <div class="bit-cell"><div class="bit">bit 1</div><div class="bit-desc">Diphthong flag</div></div>
+    <div class="bit-cell"><div class="bit">bit 2</div><div class="bit-desc">Vowel class</div></div>
+    <div class="bit-cell"><div class="bit">bit 3</div><div class="bit-desc">Voiced consonant</div></div>
+    <div class="bit-cell"><div class="bit">bit 4</div><div class="bit-desc">Nasal consonant</div></div>
+    <div class="bit-cell"><div class="bit">bit 5</div><div class="bit-desc">Voiced (general)</div></div>
+    <div class="bit-cell"><div class="bit">bit 6</div><div class="bit-desc">Unvoiced consonant</div></div>
+    <div class="bit-cell"><div class="bit">bit 7</div><div class="bit-desc">Stop / special</div></div>
+  </div>
+</div>
+
+<!-- Pipeline -->
+<div class="pipeline">
+  <strong>Text → Phonemes → Frames → Samples</strong><br>
+  <span class="highlight">"Hello"</span>
+  <span class="arrow">→</span>
+  <span class="highlight">/H EH L OW/</span>
+  <span class="arrow">→</span>
+  [frame][frame][frame]...
+  <span class="arrow">→</span>
+  [8-bit PCM @ 22050 Hz]<br>
+  <span style="font-size:0.82rem;color:var(--text-dim);margin-top:4px;display:block">
+    reciter.c (rules) <span class="arrow">→</span> sam.c (parse + expand) <span class="arrow">→</span> render.c (3-oscillator mix per 10ms frame)
+  </span>
+</div>
+
+</div>
+
+<div class="footer">
+  Generated from SAM source — <code>src/SamTabs.h</code>, <code>src/RenderTabs.h</code>, <code>src/sam.c</code><br>
+  Part of <a href="https://github.com/ShangClee/SAM" style="color:var(--accent2)">github.com/ShangClee/SAM</a>
+</div>
+
+<script>
+// Complete phoneme data: [index, code, ipa, category, example, length, stressed, f1, f2, f3, a1, a2, a3]
+const PHONEMES = [
+  [0,  "*", "", "punct", "", 0, 0, 0, 0, 0, 0, 0, 0],
+  [1,  ".*", "", "punct", "", 18, 18, 19, 67, 91, 0, 0, 0],
+  [2,  "?*", "", "punct", "", 18, 18, 19, 67, 91, 0, 0, 0],
+  [3,  ",*", "", "punct", "", 18, 18, 19, 67, 91, 0, 0, 0],
+  [4,  "-*", "", "punct", "", 8, 8, 19, 67, 91, 0, 0, 0],
+  [5,  "IY", "/iː/", "vowel", "f<strong>ee</strong>t", 8, 11, 10, 84, 110, 13, 10, 8],
+  [6,  "IH", "/ɪ/", "vowel", "p<strong>i</strong>n", 8, 11, 14, 72, 93, 13, 11, 7],
+  [7,  "EH", "/ɛ/", "vowel", "b<strong>e</strong>g", 8, 11, 18, 66, 91, 14, 13, 8],
+  [8,  "AE", "/æ/", "vowel", "<strong>Sam</strong>", 8, 11, 24, 62, 88, 15, 12, 8],
+  [9,  "AA", "/ɑː/", "vowel", "p<strong>o</strong>t", 11, 15, 26, 46, 89, 15, 13, 1],
+  [10, "AH", "/ʌ/", "vowel", "b<strong>u</strong>dget", 10, 11, 22, 44, 87, 15, 12, 1],
+  [11, "AO", "/ɔː/", "vowel", "th<strong>ough</strong>t", 12, 16, 20, 30, 88, 15, 12, 0],
+  [12, "UH", "/ʊ/", "vowel", "p<strong>u</strong>t", 10, 12, 16, 36, 82, 15, 12, 6],
+  [13, "AX", "/ə/", "vowel", "about", 10, 6, 20, 44, 89, 12, 9, 7],
+  [14, "IX", "/ɪ/", "vowel", "k<strong>i</strong>t", 5, 6, 14, 72, 93, 13, 11, 5],
+  [15, "ER", "/ɜː/", "vowel", "b<strong>ir</strong>d", 11, 14, 18, 30, 62, 15, 11, 1],
+  [16, "UX", "/ʉː/", "vowel", "r<strong>u</strong>de", 11, 14, 18, 30, 82, 15, 12, 0],
+  [17, "OH", "/oʊ/", "vowel", "g<strong>o</strong>", 11, 14, 14, 40, 94, 15, 12, 1],
+  [18, "RX", "", "semi", "", 9, 11, 0, 0, 0, 13, 12, 0],
+  [19, "LX", "", "semi", "", 10, 11, 0, 0, 0, 13, 12, 0],
+  [20, "WX", "", "semi", "", 9, 11, 0, 0, 0, 13, 12, 0],
+  [21, "YX", "", "semi", "", 10, 11, 0, 0, 0, 13, 12, 0],
+  [22, "WH", "/ʍ/", "voiced", "<strong>wh</strong>ale", 9, 11, 10, 24, 90, 13, 8, 0],
+  [23, "R*", "/ɹ/", "voiced", "<strong>r</strong>ed", 6, 8, 0, 0, 0, 13, 8, 0],
+  [24, "L*", "/l/", "voiced", "a<strong>ll</strong>ow", 6, 8, 0, 0, 0, 13, 8, 0],
+  [25, "W*", "/w/", "voiced", "a<strong>w</strong>ay", 8, 8, 0, 0, 0, 13, 8, 0],
+  [26, "Y*", "/j/", "voiced", "<strong>y</strong>ou", 6, 8, 0, 0, 0, 13, 8, 0],
+  [27, "M*", "/m/", "nasal", "Sa<strong>m</strong>", 7, 8, 6, 46, 110, 12, 9, 0],
+  [28, "N*", "/n/", "nasal", "a<strong>n</strong>y", 7, 8, 6, 46, 110, 12, 9, 0],
+  [29, "NX", "/ŋ/", "nasal", "si<strong>ng</strong>", 7, 8, 6, 46, 110, 12, 9, 0],
+  [30, "DX", "/ɾ/", "voiced", "la<strong>dd</strong>er", 2, 3, 6, 54, 121, 0, 0, 0],
+  [31, "Q*", "/ʔ/", "special", "uh-oh (glottal)", 5, 5, 17, 67, 91, 0, 0, 0],
+  [32, "S*", "/s/", "unvoiced", "<strong>s</strong>un", 2, 2, 6, 73, 99, 0, 0, 0],
+  [33, "SH", "/ʃ/", "unvoiced", "fi<strong>sh</strong>", 2, 2, 6, 79, 121, 0, 0, 0],
+  [34, "F*", "/f/", "unvoiced", "<strong>f</strong>un", 2, 2, 6, 73, 121, 0, 0, 0],
+  [35, "TH", "/θ/", "unvoiced", "<strong>th</strong>in", 2, 2, 6, 79, 121, 0, 0, 0],
+  [36, "/H", "/h/", "unvoiced", "<strong>h</strong>e", 2, 2, 14, 73, 93, 11, 0, 0],
+  [37, "—", "", "unused", "", 2, 2, 0, 0, 0, 0, 0, 0],
+  [38, "Z*", "/z/", "voiced", "bu<strong>zz</strong>", 6, 6, 8, 40, 77, 11, 3, 0],
+  [39, "ZH", "/ʒ/", "voiced", "mea<strong>s</strong>ure", 6, 6, 10, 66, 103, 11, 3, 0],
+  [40, "V*", "/v/", "voiced", "<strong>v</strong>ery", 6, 6, 8, 40, 77, 11, 3, 0],
+  [41, "DH", "/ð/", "voiced", "<strong>th</strong>is", 6, 6, 10, 66, 103, 11, 3, 0],
+  [42, "CH", "/tʃ/", "unvoiced", "<strong>ch</strong>urch", 6, 9, 6, 79, 103, 0, 0, 0],
+  [43, "**", "", "unused", "", 0, 0, 0, 0, 0, 0, 0, 0],
+  [44, "J*", "/dʒ/", "voiced", "<strong>j</strong>ust", 3, 4, 6, 79, 103, 11, 0, 0],
+  [45, "**", "", "unused", "", 0, 0, 0, 0, 0, 0, 0, 0],
+  [46, "**", "", "unused", "", 0, 0, 0, 0, 0, 0, 0, 0],
+  [47, "**", "", "unused", "", 0, 0, 0, 0, 0, 0, 0, 0],
+  [48, "EY", "/eɪ/", "diph", "d<strong>ay</strong>", 30, 14, 18, 30, 85, 14, 12, 0],
+  [49, "AY", "/aɪ/", "diph", "d<strong>igh</strong>t", 12, 15, 26, 38, 88, 15, 13, 1],
+  [50, "OY", "/ɔɪ/", "diph", "b<strong>oy</strong>", 12, 15, 18, 30, 88, 15, 13, 0],
+  [51, "AW", "/aʊ/", "diph", "n<strong>ow</strong>", 12, 14, 24, 30, 88, 15, 13, 0],
+  [52, "OW", "/oʊ/", "diph", "g<strong>o</strong>", 14, 14, 14, 30, 94, 15, 12, 1],
+  [53, "UW", "/uː/", "diph", "f<strong>oo</strong>d", 12, 14, 16, 30, 82, 15, 12, 0],
+  [54, "B*", "/b/", "stop", "<strong>b</strong>ed", 1, 1, 6, 34, 94, 0, 0, 0],
+  [55, "**", "", "unused", "", 1, 1, 0, 0, 0, 0, 0, 0],
+  [56, "**", "", "unused", "", 2, 2, 0, 0, 0, 0, 0, 0],
+  [57, "D*", "/d/", "stop", "<strong>d</strong>ig", 5, 7, 6, 54, 103, 0, 0, 0],
+  [58, "**", "", "unused", "", 1, 1, 0, 0, 0, 0, 0, 0],
+  [59, "**", "", "unused", "", 1, 1, 0, 0, 0, 0, 0, 0],
+  [60, "G*", "/ɡ/", "stop", "<strong>g</strong>o", 6, 7, 6, 110, 110, 0, 0, 0],
+  [61, "**", "", "unused", "", 1, 2, 0, 0, 0, 0, 0, 0],
+  [62, "**", "", "unused", "", 6, 7, 0, 0, 0, 0, 0, 0],
+  [63, "GX", "/ɡ/", "stop", "(alt <strong>g</strong>)", 1, 1, 6, 110, 110, 0, 0, 0],
+  [64, "**", "", "unused", "", 1, 2, 0, 0, 0, 0, 0, 0],
+  [65, "**", "", "unused", "", 8, 4, 0, 0, 0, 0, 0, 0],
+  [66, "P*", "/p/", "stop", "<strong>p</strong>en", 2, 2, 6, 86, 94, 0, 0, 0],
+  [67, "**", "", "unused", "", 8, 2, 0, 0, 0, 0, 0, 0],
+  [68, "**", "", "unused", "", 2, 4, 0, 0, 0, 0, 0, 0],
+  [69, "T*", "/t/", "stop", "<strong>t</strong>en", 2, 6, 6, 109, 121, 0, 0, 0],
+  [70, "**", "", "unused", "", 1, 1, 0, 0, 0, 0, 0, 0],
+  [71, "**", "", "unused", "", 4, 4, 0, 0, 0, 0, 0, 0],
+  [72, "K*", "/k/", "stop", "<strong>k</strong>in", 6, 7, 6, 109, 121, 0, 0, 0],
+  [73, "**", "", "unused", "", 1, 1, 0, 0, 0, 0, 0, 0],
+  [74, "**", "", "unused", "", 4, 6, 0, 0, 0, 0, 0, 0],
+  [75, "KX", "/k/", "stop", "(alt <strong>k</strong>)", 1, 4, 6, 109, 121, 0, 0, 0],
+  [76, "**", "", "unused", "", 4, 5, 0, 0, 0, 0, 0, 0],
+  [77, "**", "", "unused", "", 5, 5, 0, 0, 0, 0, 0, 0],
+  [78, "UL", "/l̩/", "special", "tac<strong>o</strong>s (syllabic l)", 5, 5, 6, 34, 94, 12, 10, 7],
+  [79, "UM", "/m̩/", "special", "rhyth<strong>m</strong> (syllabic m)", 12, 14, 6, 34, 94, 12, 10, 7],
+  [80, "UN", "/n̩/", "special", "b<strong>utton</strong> (syllabic n)", 12, 14, 6, 34, 94, 12, 10, 7],
+];
+
+const CATEGORY_ORDER = ["vowel","diph","voiced","unvoiced","nasal","stop","semi","special","punct","unused"];
+const CATEGORY_LABELS = {
+  vowel: "Vowel",
+  diph: "Diphthong",
+  voiced: "Voiced Consonant",
+  unvoiced: "Unvoiced Consonant",
+  nasal: "Nasal",
+  stop: "Stop",
+  semi: "Semivowel",
+  special: "Special",
+  punct: "Punctuation",
+  unused: "Unused / Variant"
+};
+const CATEGORY_TAG_CLASS = {
+  vowel: "tag-vowel",
+  diph: "tag-diph",
+  voiced: "tag-voiced",
+  unvoiced: "tag-unvoiced",
+  nasal: "tag-nasal",
+  stop: "tag-stop",
+  semi: "tag-semi",
+  special: "tag-special",
+  punct: "tag-punct",
+  unused: "tag-punct"
+};
+
+function renderTable(filter, query) {
+  const tbody = document.getElementById('phonemeBody');
+  const q = (query || '').toLowerCase();
+  tbody.innerHTML = '';
+  PHONEMES.forEach(p => {
+    const [idx, code, ipa, cat, example, len, stress, f1, f2, f3, a1, a2, a3] = p;
+    if (filter !== 'all' && cat !== filter) return;
+    if (q) {
+      const hay = `${idx} ${code} ${ipa} ${example.replace(/<\/?strong>/g,'')} ${CATEGORY_LABELS[cat]}`.toLowerCase();
+      if (!hay.includes(q)) return;
+    }
+    const tr = document.createElement('tr');
+    const isUnused = cat === 'unused' || cat === 'punct';
+    if (isUnused) tr.className = 'unused';
+    tr.innerHTML = `
+      <td class="num">${idx}</td>
+      <td class="code">${code}</td>
+      <td class="ipa">${ipa || '—'}</td>
+      <td><span class="tag ${CATEGORY_TAG_CLASS[cat]}">${CATEGORY_LABELS[cat]}</span></td>
+      <td class="example">${example || '—'}</td>
+      <td class="num">${len || '—'}</td>
+      <td class="num">${stress || '—'}</td>
+      <td class="num">${f1 || '—'}</td>
+      <td class="num">${f2 || '—'}</td>
+      <td class="num">${f3 || '—'}</td>
+      <td class="num">${a1}</td>
+      <td class="num">${a2}</td>
+      <td class="num">${a3}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderCards() {
+  const container = document.getElementById('categoryCards');
+  container.innerHTML = '';
+  CATEGORY_ORDER.forEach(cat => {
+    const items = PHONEMES.filter(p => p[3] === cat && p[1] !== '**' && p[1] !== '—');
+    if (items.length === 0) return;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3><span class="tag ${CATEGORY_TAG_CLASS[cat]}">${CATEGORY_LABELS[cat]}</span> <span style="color:var(--text-dim);font-size:0.78rem;margin-left:6px">${items.length}</span></h3>
+      <div class="phoneme-list">
+        ${items.map(p => `<span class="phoneme-chip" data-idx="${p[0]}" title="#${p[0]} — ${p[4].replace(/<\/?strong>/g,'') || CATEGORY_LABELS[cat]}">${p[1]}${p[2] ? `<span class="ipa-small">${p[2]}</span>` : ''}</span>`).join('')}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Search
+document.getElementById('search').addEventListener('input', e => {
+  const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+  renderTable(activeFilter, e.target.value);
+});
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable(btn.dataset.filter, document.getElementById('search').value);
+  });
+});
+
+// Chip click → highlight in table
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.phoneme-chip');
+  if (chip) {
+    const idx = chip.dataset.idx;
+    const search = document.getElementById('search');
+    const activeFilter = document.querySelector('.filter-btn.active');
+    activeFilter.classList.remove('active');
+    document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+    search.value = idx;
+    renderTable('all', idx);
+    document.getElementById('phonemeTable').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // flash the row
+    const rows = document.querySelectorAll('#phonemeBody tr');
+    rows.forEach(r => { if (r.children[0].textContent === idx) { r.style.background = 'var(--accent)'; setTimeout(() => r.style.background = '', 1200); }});
+  }
+});
+
+// Init
+renderTable('all', '');
+renderCards();
+</script>
+</body>
+</html>
