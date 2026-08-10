@@ -29,3 +29,22 @@ jobs:
         with:
           name: test-wavs
           path: tmp_test_wavs
+
+  web-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.74
+      - name: Build WASM
+        run: bash build_web.sh
+      - name: Smoke test WASM artifact (Node)
+        run: node script/test_web_smoke.mjs
+      - name: Upload WASM artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-web
+          path: web/

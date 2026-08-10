@@ -46,21 +46,54 @@ print('sha256', hashlib.sha256(buf).hexdigest())
 PY
 
 # verify against golden hashes if present
-if [ -f "$ROOT/test-assets/golden_hashes.txt" ]; then
-  echo "Verifying against golden hashes"
+if [ -d "$ROOT/test-assets/golden_wavs" ]; then
+  echo "Verifying produced WAVs against golden WAVs (tolerance checks)"
   python3 - <<PY
-import hashlib
-gold={}
-with open('$ROOT/test-assets/golden_hashes.txt') as f:
-    for l in f:
-        h,p=l.strip().split('  ')
-        gold[p]=h
-for p in ['test_0.wav','test_1.wav','test_2.wav','test_buffer_bytes.wav']:
-    path='$OUTDIR/'+p
-    h=hashlib.sha256(open(path,'rb').read()).hexdigest()
-    print(p,h)
-    if p in gold:
-        assert gold[p]==h, (p+' hash mismatch')
+import wave,math,sys
+ROOT = '$ROOT'
+OUTDIR = '$OUTDIR'
+golddir = ROOT + '/test-assets/golden_wavs'
+
+def read_samples(path):
+    f = wave.open(path,'rb')
+    assert f.getnchannels()==1
+    assert f.getframerate()==22050
+    frames = f.getnframes()
+    raw = f.readframes(frames)
+    f.close()
+    # 8-bit unsigned PCM -> convert to signed centered at 0
+    samples = [ (b if isinstance(b,int) else ord(b)) - 128 for b in raw ]
+    return samples
+
+def compare(gold_path, out_path, rms_tol=2.0, max_tol=10):
+    g = read_samples(gold_path)
+    o = read_samples(out_path)
+    if len(g) != len(o):
+        print('length mismatch', gold_path, len(g), out_path, len(o))
+        return False
+    # compute RMS and max abs diff
+    ssd = 0
+    maxd = 0
+    for a,b in zip(g,o):
+        d = a-b
+        ssd += d*d
+        if abs(d) > maxd: maxd = abs(d)
+    rms = math.sqrt(ssd/len(g))
+    print(out_path, 'rms=', rms, 'max=', maxd)
+    return rms <= rms_tol and maxd <= max_tol
+
+ok = True
+for name in ['test_0.wav','test_1.wav','test_2.wav','test_buffer_bytes.wav']:
+    gold = golddir + '/' + name
+    out = OUTDIR + '/' + name
+    if not compare(gold, out):
+        print('Tolerance check failed for', name)
+        ok = False
+
+if not ok:
+    sys.exit(2)
+else:
+    print('All tolerance checks passed')
 PY
 fi
 

@@ -21,6 +21,7 @@ void SetBufferSeconds(int seconds);
 void SetBufferBytes(size_t bytes);
 void SetSamError(int code);
 int GetSamError();
+int GetSamErrorPosition();
 int SAMMain();
 char* GetBuffer();
 int GetBufferLength();
@@ -40,8 +41,33 @@ int GetBufferLength();
     <li>Compares produced WAVs to golden WAVs with tolerance checks (RMS & max diff)</li>
   </ul>
 
+  <h2>Web / WASM build</h2>
+  <p>Build script: <code>build_web.sh</code> (needs Emscripten's <code>emcc</code> on PATH).</p>
+  <ul>
+    <li>Produces <code>web/sam.js</code> (ES6 module) + <code>web/sam.wasm</code></li>
+    <li>Runs in browsers and Node (<code>ENVIRONMENT=web,node</code>)</li>
+    <li>UI: <code>web/index.html</code> — text/phonetic modes, voice presets, sing mode, WAV download</li>
+  </ul>
+  <p>WASM API (defined in <code>src/web_wrapper.c</code>):</p>
+  <pre>
+int sam_web_synthesize(const char *text, int phonetic,
+                       int pitch, int speed, int mouth, int throat, int singmode);
+char* sam_web_get_buffer(void);
+int sam_web_get_sample_count(void);
+int sam_web_get_sample_rate(void);
+const char* sam_web_get_phonetic_output(void);
+int sam_web_get_error(void);          // 0=OK, 1=OOM, 2=PARSE, 3=UNKNOWN
+int sam_web_get_error_position(void); // index of the offending input char (PARSE)
+  </pre>
+  <p>Smoke test: <code>node script/test_web_smoke.mjs</code> — imports the shipped
+  artifact, synthesizes in text/phonetic/sing modes, and asserts parse-error reporting.</p>
+
   <h2>CI</h2>
-  <p>Workflow: <code>.github/workflows/integration.yml</code>. Runs on Ubuntu and macOS and uploads <code>tmp_test_wavs</code> as artifacts.</p>
+  <p>Workflow: <code>.github/workflows/integration.yml</code>.</p>
+  <ul>
+    <li><code>build-and-test</code>: native build + integration script on Ubuntu and macOS; uploads <code>tmp_test_wavs</code></li>
+    <li><code>web-build</code>: Emscripten build + Node smoke test on Ubuntu; uploads <code>web/</code></li>
+  </ul>
 
   <hr>
   <p style="font-size:smaller;color:#666">Generated docs — webdocs/developer.html</p>

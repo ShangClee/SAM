@@ -4,3 +4,6 @@
 # ignore generated test wavs
 tmp_test_wavs/
 *.wav
+
+# keep golden wavs checked in
+!test-assets/golden_wavs/*.wav

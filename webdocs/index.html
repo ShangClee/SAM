@@ -15,6 +15,13 @@
     <li><a href="#integration">Integration Tests & CI</a></li>
   </ul>
 
+  <h2>Browser edition</h2>
+  <p>SAM also runs as a WebAssembly app — open <code>web/index.html</code>
+  (or serve the <code>web/</code> directory) to speak from the browser:
+  text &amp; phonetic input, voice presets, sing mode, and WAV download.
+  Rebuild the WASM with <code>bash build_web.sh</code> and verify with
+  <code>node script/test_web_smoke.mjs</code>. See <a href="developer.html">Developer Notes</a>.</p>
+
   <h2 id="integration">Integration summary</h2>
   <p>Added an integration test script and CI workflow. The script produces WAVs from sample phrases and validates them.</p>
   <ul>

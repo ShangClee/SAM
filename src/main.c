@@ -251,11 +251,11 @@ int main(int argc, char **argv)
 
     if (!phonetic)
     {
-        strncat(input, "[", 256);
+        strncat(input, "[", 255 - strlen(input));
         if (!TextToPhonemes((unsigned char *)input)) return 1;
         if (debug)
             printf("phonetic input: %s\n", input);
-    } else strncat(input, "\x9b", 256);
+    } else strncat(input, "\x9b", 255 - strlen(input));
 
 #ifdef USESDL
     if ( SDL_Init(SDL_INIT_AUDIO) < 0 )

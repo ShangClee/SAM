@@ -5,7 +5,7 @@
 #include "debug.h"
 #include "sam.h"
 
-unsigned char A, X, Y;
+static unsigned char A, X, Y;
 extern int debug;
 
 static unsigned char inputtemp[256];   // secure copy of input tab36096

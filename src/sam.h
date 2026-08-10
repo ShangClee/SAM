@@ -12,6 +12,7 @@ void SetBufferSeconds(int seconds);
 void SetBufferBytes(size_t bytes);
 int GetSamError();
 void SetSamError(int code);
+int GetSamErrorPosition();
 
 int SAMMain();
 

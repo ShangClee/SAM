@@ -94,6 +94,7 @@ void SetMouthThroat(unsigned char mouth, unsigned char throat);
 static int buffer_seconds = 10;
 static size_t buffer_bytes = 0;
 static int sam_error = 0; // 0=ok, non-zero = error code
+static int sam_error_position = 0; // input position where the error occurred
 
 void SetBufferSeconds(int seconds)
 {
@@ -109,7 +110,8 @@ void SetBufferBytes(size_t bytes)
 }
 
 int GetSamError() { return sam_error; }
-void SetSamError(int code) { sam_error = code; }
+void SetSamError(int code) { sam_error = code; sam_error_position = 0; }
+int GetSamErrorPosition() { return sam_error_position; }
 
 int Init()
 {
@@ -553,6 +555,7 @@ pos41134:
             //41181: JSR 42043 //Error
            // FAILED TO MATCH ANYTHING, RETURN 0 ON FAILURE
             sam_error = SAM_ERR_PARSE;
+            sam_error_position = X - 1; // X was already advanced past sign1
             return 0;
         }
 // SET THE STRESS FOR THE PRIOR PHONEME
