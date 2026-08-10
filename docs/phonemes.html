@@ -310,6 +310,67 @@ td.num { font-family: 'Courier New', monospace; color: var(--text-dim); font-siz
   </div>
 </div>
 
+<!-- IPA Coverage -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:36px">
+  <h2 style="font-size:1.15rem;color:var(--accent2);margin-bottom:8px">🌍 IPA Coverage — What SAM Covers</h2>
+  <p style="color:var(--text-dim);font-size:0.88rem;margin-bottom:16px">
+    SAM's 81 entries cover <strong style="color:var(--text)">~40 IPA symbols</strong> — specifically English phonemes.
+    The full IPA has 170+ symbols across all world languages. About <strong style="color:var(--accent2)">30% of the IPA</strong> is represented below.
+  </p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:16px">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="color:var(--accent);font-size:0.82rem;font-weight:600">Vowels</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--text)">13 <span style="font-size:0.85rem;color:var(--text-dim);font-weight:400">of 28</span></div>
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px">SAM covers the core English vowels. Missing: ʏ ø œ ɐ ɶ ɤ ɵ ɘ ʉ and more — needed for French, German, Japanese, etc.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="color:var(--tag-diph);font-size:0.82rem;font-weight:600">Diphthongs</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--text)">6 <span style="font-size:0.85rem;color:var(--text-dim);font-weight:400">of ~8</span></div>
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px">English diphthongs are well covered (EY, AY, OY, AW, OW, UW). Some languages use others (e.g. ɪə, ʊə).</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="color:var(--tag-voiced);font-size:0.82rem;font-weight:600">Voiced Consonants</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--text)">~14 <span style="font-size:0.85rem;color:var(--text-dim);font-weight:400">of ~34</span></div>
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px">Missing: ʙ ɱ ɳ ɲ ɢ ɣ ɽ ʑ ɮ ʋ and many more — needed for Hindi, Arabic, Swahili, etc.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="color:var(--tag-unvoiced);font-size:0.82rem;font-weight:600">Unvoiced Consonants</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--text)">~8 <span style="font-size:0.85rem;color:var(--text-dim);font-weight:400">of ~38</span></div>
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px">Missing: ɸ ç ɕ ɬ ʂ ʍ ʜ and more — needed for Scots Gaelic, Polish, Finnish, etc.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="color:var(--tag-stop);font-size:0.82rem;font-weight:600">Stops</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--text)">~5+ <span style="font-size:0.85rem;color:var(--text-dim);font-weight:400">of ~20</span></div>
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px">Missing: ejectives (pʼ tʼ kʼ), implosives (ɓ ɗ ɠ ʄ), clicks (ʘ ǀ ǂ ǁ) — needed for Arabic, Hausa, Zulu, etc.</div>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+      <div style="color:var(--tag-special);font-size:0.82rem;font-weight:600">Special / Nasals / Semi</div>
+      <div style="font-size:1.5rem;font-weight:700;color:var(--text)">~12 <span style="font-size:0.85rem;color:var(--text-dim);font-weight:400">of ~30</span></div>
+      <div style="font-size:0.78rem;color:var(--text-dim);margin-top:4px">Missing: syllabic obstruents, implosive nasals, approximants. Tone marks and suprasegmentals (length, stress, intonation) are absent.</div>
+    </div>
+  </div>
+  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px">
+    <div style="font-size:0.88rem;color:var(--text);margin-bottom:8px;font-weight:600">What SAM lacks entirely</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;font-size:0.82rem;color:var(--text-dim)">
+      <div>❌ Non-English vowels: /y ø œ ɶ ɤ ɵ</div>
+      <div>❌ Clicks: /ʘ /ǀ /ǂ /ǁ</div>
+      <div>❌ Implosives: /ɓ /ɗ /ʄ /ɠ</div>
+      <div>❌ Ejectives: /pʼ /tʼ /kʼ</div>
+      <div>❌ Laterals: /ɬ /ɮ /ʎ /ʟ</div>
+      <div>❌ Retroflex: /ʈ /ɖ /ɳ /ɽ /ʂ /ʐ</div>
+      <div>❌ Tone marks & suprasegmentals</div>
+      <div>❌ Co-articulation modifiers</div>
+      <div>❌ Labial-velar: /k͡p /ɡ͡b</div>
+      <div>❌ Pharyngeal: /ħ /ʕ</div>
+      <div>❌ Epiglottal: /ʜ /ʢ /ʡ</div>
+      <div>❌ Diacritics (nasalized, aspirated, etc.)</div>
+    </div>
+  </div>
+  <p style="color:var(--text-dim);font-size:0.8rem;margin-top:12px">
+    <strong style="color:var(--accent2)">In short:</strong> SAM is a 1982 English-only TTS engine. Its phoneme set was designed to produce intelligible English speech on a Commodore 64, not to represent all human speech sounds. The ~40 active IPA symbols it covers are precisely the ones needed for General American English.
+  </p>
+</div>
+
 <!-- Search & Filter -->
 <div class="controls">
   <input type="text" id="search" placeholder="Search by name, IPA, example, or index… (e.g. SH, /ʃ/, fish)" autocomplete="off">
