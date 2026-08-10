@@ -373,7 +373,7 @@ td.num { font-family: 'Courier New', monospace; color: var(--text-dim); font-siz
 
 <!-- Search & Filter -->
 <div class="controls">
-  <input type="text" id="search" placeholder="Search by name, IPA, example, or index… (e.g. SH, /ʃ/, fish)" autocomplete="off">
+  <input type="text" id="search" placeholder="Search by name, IPA, example, Hz, or index… (e.g. SH, /ʃ/, fish, 861)" autocomplete="off">
   <button class="filter-btn active" data-filter="all">All</button>
   <button class="filter-btn" data-filter="vowel">Vowels</button>
   <button class="filter-btn" data-filter="diph">Diphthongs</button>
@@ -386,6 +386,9 @@ td.num { font-family: 'Courier New', monospace; color: var(--text-dim); font-siz
 </div>
 
 <!-- Main Table -->
+<p style="color:var(--text-dim);font-size:0.78rem;margin-bottom:8px;font-family:'Courier New',monospace">
+  Hz columns: <code>f_Hz = raw × 22050 ÷ 256</code> (raw = phase increment into 256-entry sine table at 22050 Hz sample rate). See <code>docs/phoneme_freq_table.txt</code> for full derivation.
+</p>
 <div class="table-wrap">
 <table id="phonemeTable">
 <thead>
@@ -396,10 +399,13 @@ td.num { font-family: 'Courier New', monospace; color: var(--text-dim); font-siz
   <th>Category</th>
   <th>Example</th>
   <th>Len</th>
-  <th>Stressed</th>
+  <th>Str</th>
   <th>F1</th>
+  <th>F1 Hz</th>
   <th>F2</th>
+  <th>F2 Hz</th>
   <th>F3</th>
+  <th>F3 Hz</th>
   <th>A1</th>
   <th>A2</th>
   <th>A3</th>
@@ -475,6 +481,11 @@ td.num { font-family: 'Courier New', monospace; color: var(--text-dim); font-siz
 
 <script>
 // Complete phoneme data: [index, code, ipa, category, example, length, stressed, f1, f2, f3, a1, a2, a3]
+// f1, f2, f3 are raw phase-increment values (0-255)
+// Hz = (raw * 22050) / 256 — see docs/phoneme_freq_table.txt for derivation
+const SAMPLE_RATE = 22050;
+const TABLE_SIZE = 256;
+function rawToHz(v) { return v ? Math.round((v * SAMPLE_RATE / TABLE_SIZE) * 10) / 10 : 0; }
 const PHONEMES = [
   [0,  "*", "", "punct", "", 0, 0, 0, 0, 0, 0, 0, 0],
   [1,  ".*", "", "punct", "", 18, 18, 19, 67, 91, 0, 0, 0],
@@ -593,7 +604,7 @@ function renderTable(filter, query) {
     const [idx, code, ipa, cat, example, len, stress, f1, f2, f3, a1, a2, a3] = p;
     if (filter !== 'all' && cat !== filter) return;
     if (q) {
-      const hay = `${idx} ${code} ${ipa} ${example.replace(/<\/?strong>/g,'')} ${CATEGORY_LABELS[cat]}`.toLowerCase();
+      const hay = `${idx} ${code} ${ipa} ${example.replace(/<\/?strong>/g,'')} ${CATEGORY_LABELS[cat]} ${rawToHz(f1)} ${rawToHz(f2)} ${rawToHz(f3)}`.toLowerCase();
       if (!hay.includes(q)) return;
     }
     const tr = document.createElement('tr');
@@ -608,8 +619,11 @@ function renderTable(filter, query) {
       <td class="num">${len || '—'}</td>
       <td class="num">${stress || '—'}</td>
       <td class="num">${f1 || '—'}</td>
+      <td class="num">${f1 ? rawToHz(f1).toFixed(0) + ' Hz' : '—'}</td>
       <td class="num">${f2 || '—'}</td>
+      <td class="num">${f2 ? rawToHz(f2).toFixed(0) + ' Hz' : '—'}</td>
       <td class="num">${f3 || '—'}</td>
+      <td class="num">${f3 ? rawToHz(f3).toFixed(0) + ' Hz' : '—'}</td>
       <td class="num">${a1}</td>
       <td class="num">${a2}</td>
       <td class="num">${a3}</td>
