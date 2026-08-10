@@ -16,13 +16,68 @@ For immediate output it uses the SDL-library, otherwise it can save .wav files.
 
 An online version and executables for Windows can be found on the web site: http://simulationcorner.net/index.php?page=sam
 
+
+Browser (WebAssembly)
+=====================
+
+SAM also runs in the browser as a WebAssembly module — no server required.
+
+**Quick start:**
+
+    # Build the WASM artifact (needs Emscripten on PATH)
+    source /path/to/emsdk/emsdk_env.sh   # or: brew install emscripten
+    bash build_web.sh
+
+    # Serve the web/ directory and open http://localhost:8000
+    python3 -m http.server 8000 -d web
+
+    # Smoke-test the shipped artifact in Node (same binary the browser runs)
+    node script/test_web_smoke.mjs
+
+**Features** (`web/index.html`):
+
+- Text input — SAM converts it to phonemes automatically
+- Phonetic input — enter SAM phoneme codes directly (e.g. `/HEY2`)
+- Voice presets — SAM, Elf, Little Robot, Stuffy Guy, Little Old Lady, Extra-Terrestrial
+- Sing mode toggle
+- WAV download
+- Error reporting with the exact position of invalid phoneme codes
+- Cmd/Ctrl+Enter shortcut to speak
+
+The build produces `web/sam.js` (ES6 module) + `web/sam.wasm` and runs in both browsers and Node.
+The WASM API is defined in `src/web_wrapper.c` — see `webdocs/developer.html` for the full function list.
+
+**Architecture:**
+
+    src/web_wrapper.c      C → WASM bridge exposing sam_web_* functions
+    build_web.sh           Emscripten build (MODULARIZE + EXPORT_ES6)
+    web/index.html         Self-contained single-page app (no frameworks)
+    script/test_web_smoke.mjs   Node smoke test exercising the shipped artifact
+
+    ┌────────────┐    Emscripten    ┌────────────┐
+    │  src/*.c   │ ───────────────▶ │ web/sam.js │  ES6 module
+    │  (C core)  │    -O2 -sWASM=1  │ web/sam.wasm
+    └────────────┘                  └─────┬──────┘
+                                          │  import
+                                   ┌──────▼──────┐
+                                   │ web/index.html │  browser UI
+                                   └────────────────┘
+
 Compile
 =======
 
-Simply type "make" in your command prompt.
+Native (with SDL):
+
+    make                  # builds ./sam (uses SDL for immediate playback)
+    make CFLAGS=-DUSESDL=0 LFLAGS=   # headless, no SDL (wav output only)
+
 In order to compile without SDL remove the SDL statements from the CFLAGS and LFLAGS variables in the file "Makefile".
 
 It should compile on every UNIX-like operating system. For Windows you need Cygwin or MinGW( + libsdl).
+
+WebAssembly (see **Browser** section above):
+
+    bash build_web.sh     # produces web/sam.js + web/sam.wasm
 
 Fork
 ====
@@ -72,6 +127,26 @@ A description of additional features can be found in the original manual at
 	http://www.retrobits.net/atari/sam.shtml
 or in the manual of the equivalent Apple II program
 	http://www.apple-iigs.info/newdoc/sam.pdf
+
+
+Integration Tests & CI
+======================
+
+**Run locally:**
+
+    make -j2                              # build the native binary first
+    ./script/test_integration.sh          # generates WAVs and verifies against golden references
+
+The integration script:
+
+1. Synthesises four sample phrases to WAV files
+2. Validates WAV headers (mono, 22050 Hz)
+3. Compares produced WAVs against golden references in `test-assets/golden_wavs/` using RMS and max-diff tolerance checks
+
+**CI** (`.github/workflows/integration.yml`):
+
+- `build-and-test` — native build + integration script on Ubuntu and macOS; uploads WAV artifacts
+- `web-build` — Emscripten WASM build + Node smoke test on Ubuntu; uploads `web/` artifacts
 
 
 Adaption To C
